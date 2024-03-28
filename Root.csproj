@@ -79,7 +79,7 @@
      <Compile Include="Assets\Scripts\Controller\LevelController.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\ReadOnly\IReadOnlyProjectile.cs" />
      <Compile Include="Assets\Scripts\UnitBrains\Enemy\DefaultEnemyUnitBrain.cs" />
-     <Compile Include="Assets\Scripts\UnitBrains\IUnitCoordinator.cs" />
+     <Compile Include="Assets\Scripts\UnitBrains\IReadOnlyUnitCoordinator.cs" />
      <Compile Include="Assets\Scripts\View\ProjectileView.cs" />
      <Compile Include="Assets\Scripts\View\StartMenuView.cs" />
      <Compile Include="Assets\Scripts\Model\RuntimeModel.cs" />
