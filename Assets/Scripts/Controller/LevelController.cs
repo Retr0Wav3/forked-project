@@ -4,6 +4,7 @@ using Model.Config;
 using Model.Runtime;
 using UnitBrains;
 using UnitBrains.Enemy;
+using Unity.Plastic.Newtonsoft.Json.Serialization;
 using UnityEngine;
 using Utilities;
 using View;
@@ -12,6 +13,8 @@ namespace Controller
 {
     public class LevelController : IPlayerUnitChoosingListener
     {
+        public Action SimulationStarted;
+        
         private readonly RuntimeModel _runtimeModel;
         private readonly RootController _rootController;
         private readonly BotController _botController;
@@ -89,6 +92,7 @@ namespace Controller
                 _runtimeModel.Money[RuntimeModel.BotPlayerId] < _settings.GetCheapestEnemyUnitCost())
             {
                 _runtimeModel.Stage = RuntimeModel.GameStage.Simulation;
+                SimulationStarted?.Invoke();
             }
         }
 

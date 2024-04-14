@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\View\UnitView.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\ReadOnly\IReadOnlyUnit.cs" />
      <Compile Include="Assets\Scripts\UnitBrains\BaseUnitBrain.cs" />
+     <Compile Include="Assets\Scripts\Controller\StatusEffectsController.cs" />
      <Compile Include="Assets\Scripts\Utilities\CameraPositioning.cs" />
      <Compile Include="Assets\Scripts\View\ChooseUnitView.cs" />
      <Compile Include="Assets\Scripts\View\UnitCardView.cs" />
@@ -61,6 +62,7 @@
      <Compile Include="Assets\Scripts\EnterPoint.cs" />
      <Compile Include="Assets\Scripts\Utilities\UnitSorter.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\MainBase.cs" />
+     <Compile Include="Assets\Scripts\StatusEffects\StatusEffect.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\ReadOnly\IReadOnlyMap.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\Projectiles\ProjectileType.cs" />
      <Compile Include="Assets\Scripts\UnitBrains\UnitBrainProvider.cs" />
@@ -77,12 +79,13 @@
      <Compile Include="Assets\Scripts\UnitBrains\Pathfinding\SmartUnitPath.cs" />
      <Compile Include="Assets\Scripts\Utilities\TimeUtil.cs" />
      <Compile Include="Assets\Scripts\Controller\LevelController.cs" />
+     <Compile Include="Assets\Scripts\StatusEffects\Debuff.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\ReadOnly\IReadOnlyProjectile.cs" />
      <Compile Include="Assets\Scripts\UnitBrains\Enemy\DefaultEnemyUnitBrain.cs" />
-     <Compile Include="Assets\Scripts\UnitBrains\IReadOnlyUnitCoordinator.cs" />
      <Compile Include="Assets\Scripts\View\ProjectileView.cs" />
      <Compile Include="Assets\Scripts\View\StartMenuView.cs" />
      <Compile Include="Assets\Scripts\Model\RuntimeModel.cs" />
+     <Compile Include="Assets\Scripts\StatusEffects\ScriptableObjects\EffectInfo.cs" />
      <Compile Include="Assets\Scripts\View\HealthBar.cs" />
      <Compile Include="Assets\Scripts\View\VFXView.cs" />
      <Compile Include="Assets\Scripts\Controller\IPlayerUnitChoosingListener.cs" />
@@ -91,13 +94,16 @@
      <Compile Include="Assets\Scripts\Model\Runtime\Projectiles\ArchToTileProjectile.cs" />
      <Compile Include="Assets\Scripts\UnitBrains\Pathfinding\DummyUnitPath.cs" />
      <Compile Include="Assets\Scripts\Controller\RootController.cs" />
+     <Compile Include="Assets\Scripts\UnitBrains\IReadOnlyUnitCoordinator.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\Unit.cs" />
      <Compile Include="Assets\Scripts\Model\IReadOnlyRuntimeModel.cs" />
+     <Compile Include="Assets\Scripts\StatusEffects\ScriptableObjects\StatusEffectsData.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\Projectiles\HorizontalLineProjectile.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\Projectiles\HomingProjectile.cs" />
      <Compile Include="Assets\Scripts\Utilities\MapGenerator.cs" />
      <Compile Include="Assets\Scripts\Controller\BotController.cs" />
      <Compile Include="Assets\Scripts\Controller\SimulationController.cs" />
+     <Compile Include="Assets\Scripts\StatusEffects\Buff.cs" />
      <Compile Include="Assets\Scripts\UnitBrains\Pathfinding\Node.cs" />
      <None Include="Assets\Scripts\Root.asmdef" />
      <Folder Include="Assets\Scripts" />
@@ -111,6 +117,8 @@
      <Folder Include="Assets\Scripts\View" />
      <Folder Include="Assets\Scripts\Model" />
      <Folder Include="Assets\Scripts\Model\Config" />
+     <Folder Include="Assets\Scripts\StatusEffects" />
+     <Folder Include="Assets\Scripts\StatusEffects\ScriptableObjects" />
      <Folder Include="Assets\Scripts\UnitBrains\Player" />
      <Folder Include="Assets\Scripts\Editor" />
      <Folder Include="Assets\Scripts\Utilities" />

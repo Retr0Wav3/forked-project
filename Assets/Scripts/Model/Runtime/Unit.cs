@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Controller;
 using Model.Config;
 using Model.Runtime.Projectiles;
 using Model.Runtime.ReadOnly;
+using StatusEffects;
 using UnitBrains;
 using UnitBrains.Pathfinding;
 using UnityEngine;
@@ -22,6 +24,7 @@ namespace Model.Runtime
         private readonly List<BaseProjectile> _pendingProjectiles = new();
         private IReadOnlyRuntimeModel _runtimeModel;
         private BaseUnitBrain _brain;
+        private StatusEffectsController _statusEffectsController;
 
         private float _nextBrainUpdateTime = 0f;
         private float _nextMoveTime = 0f;
@@ -36,6 +39,7 @@ namespace Model.Runtime
             _brain.SetUnit(this);
             _brain.SetCoordinator(coordinator);
             _runtimeModel = ServiceLocator.Get<IReadOnlyRuntimeModel>();
+            _statusEffectsController = ServiceLocator.Get<StatusEffectsController>();
         }
 
         public void Update(float deltaTime, float time)
@@ -51,13 +55,15 @@ namespace Model.Runtime
             
             if (_nextMoveTime < time)
             {
-                _nextMoveTime = time + Config.MoveDelay;
+                float modifier = _statusEffectsController.GetAttributeModifier(this, Attributes.MovementInterval, Config.MoveDelay);
+                _nextMoveTime = time + modifier;
                 Move();
             }
             
             if (_nextAttackTime < time && Attack())
             {
-                _nextAttackTime = time + Config.AttackDelay;
+                float modifier = _statusEffectsController.GetAttributeModifier(this, Attributes.AttackInterval, Config.AttackDelay);
+                _nextAttackTime = time + modifier;
             }
         }
 
