@@ -34,7 +34,7 @@ namespace StatusEffects
         public void Activate()
         {
             _isActive = true;
-            _activationTime = Time.unscaledTime;
+            _activationTime = Time.time;
         }
 
         

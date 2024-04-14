@@ -29,7 +29,7 @@ namespace Controller
             _timeUtil = ServiceLocator.Get<TimeUtil>();
             
             _levelController.SimulationStarted += OnSimulationStarted;
-            _timeUtil.AddFixedUpdateAction(DeactivateExpiredEffects);
+            _timeUtil.AddUpdateAction(DeactivateExpiredEffects);
         }
 
 
@@ -107,8 +107,8 @@ namespace Controller
                 {
                     if (!effect.IsActive)
                         continue;
-                    
-                    if (Time.unscaledTime - effect.ActivationTime > effect.Duration)
+
+                    if (Time.time - effect.ActivationTime > effect.Duration)
                         effect.Deactivate();
                 }
             }
@@ -118,7 +118,7 @@ namespace Controller
         public void Dispose()
         {
             _levelController.SimulationStarted -= OnSimulationStarted;
-            _timeUtil.RemoveFixedUpdateAction(DeactivateExpiredEffects);
+            _timeUtil.RemoveUpdateAction(DeactivateExpiredEffects);
         }
     }
     
