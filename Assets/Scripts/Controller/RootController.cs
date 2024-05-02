@@ -28,14 +28,14 @@ namespace Controller
             
             var gameplayVisual = SpawnGameplayVisual();
             ServiceLocator.Register(gameplayVisual);
-
-            var vfxView = SpawnVFXView();
-            ServiceLocator.Register(vfxView);
             
             _levelController = new(_runtimeModel, this);
             
             _statusEffectsController = new(_runtimeModel, _levelController);
             ServiceLocator.Register(_statusEffectsController);
+            
+            var vfxView = SpawnVFXView();
+            ServiceLocator.Register(vfxView);
             
             _rootView.ShowStartMenu();
         }
