@@ -7,18 +7,29 @@ using StatusEffects;
 using StatusEffects.ScriptableObjects;
 using UnityEngine;
 using Utilities;
+using View;
 using Random = System.Random;
 
 namespace Controller
 {
+    public enum EffectType
+    {
+        Buff,
+        Debuff,
+    }
+    
     public class StatusEffectsController : IDisposable
     {
-        private readonly Dictionary<IReadOnlyUnit, List<StatusEffect>> _allUnitsEffects;
+        public Dictionary<IReadOnlyUnit, HashSet<StatusEffect>> AllUnitsEffects => _allUnitsEffects;
+        public Action<Vector2Int, VFXView.VFXType> BuffApplied;
+
+        private readonly Dictionary<IReadOnlyUnit, HashSet<StatusEffect>> _allUnitsEffects;
         private readonly StatusEffectsData _statusEffectsData;
         private readonly IReadOnlyRuntimeModel _runtimeModel;
         private readonly LevelController _levelController;
         private readonly TimeUtil _timeUtil;
         private readonly int _maxEffectsOnUnit = 2;
+        private Random _random = new();
 
         public StatusEffectsController(IReadOnlyRuntimeModel runtimeModel, LevelController levelController)
         {
@@ -29,7 +40,7 @@ namespace Controller
             _timeUtil = ServiceLocator.Get<TimeUtil>();
             
             _levelController.SimulationStarted += OnSimulationStarted;
-            _timeUtil.AddUpdateAction(DeactivateExpiredEffects);
+            _timeUtil.AddUpdateAction(RemoveExpiredEffects);
         }
 
 
@@ -55,61 +66,46 @@ namespace Controller
 
             foreach (var unit in allUnits)
             {
-                var listOfEffects = GetUnitStatusEffects(_statusEffectsData, _maxEffectsOnUnit);
-                _allUnitsEffects.Add(unit, listOfEffects);
-
-                foreach (var effect in listOfEffects)
-                {
-                    effect.Activate();
-                }
+                _allUnitsEffects.Add(unit, new HashSet<StatusEffect>());
             }
         }
 
 
-        private List<StatusEffect> GetUnitStatusEffects(StatusEffectsData data, int maxEffects)
+        public void ApplyEffectOnUnit(IReadOnlyUnit unit, EffectType type)
         {
-            HashSet<StatusEffect> unitStatusEffects = new();
-            Random random = new();
-            
-            var buffs = data.Buffs;
-            var debuffs = data.Debuffs;
-
-            for (int i = 0; i < maxEffects; i++)
+            if (_allUnitsEffects[unit].Count < _maxEffectsOnUnit)
             {
-                if (random.Next(0, 2) == 1)
-                    unitStatusEffects.Add(GetRandomEffect(buffs));
-                else
-                    unitStatusEffects.Add(GetRandomEffect(debuffs));
+                var randomEffect = GetEffect(type);
+                randomEffect.Activate();
+                BuffApplied?.Invoke(unit.Pos,VFXView.VFXType.BuffApplied);
+                _allUnitsEffects[unit].Add(randomEffect);
             }
-            
-            return unitStatusEffects.ToList();
         }
         
         
-        private StatusEffect GetRandomEffect(IEnumerable<EffectInfo> effectInfos)
+        private StatusEffect GetEffect(EffectType type)
         {
-            Random random = new();
-            var effectIndex = random.Next(0, effectInfos.Count());
-            var effect = effectInfos.ElementAt(effectIndex);
+            var effects = type is EffectType.Buff ? _statusEffectsData.Buffs : _statusEffectsData.Debuffs;
+            var effectIndex = _random.Next(0, effects.Count());
+            var result = effects.ElementAt(effectIndex);
 
-            if (effect.IsBuff)
-                return new Buff(effect.Attribute, effect.Modifier, effect.Duration);
+            if (result.IsBuff)
+                return new Buff(result.Attribute, result.Modifier, result.Duration);
 
-            return new Debuff(effect.Attribute, effect.Modifier, effect.Duration);
+            return new Debuff(result.Attribute, result.Modifier, result.Duration);
         }
         
         
-        private void DeactivateExpiredEffects(float deltaTime)
+        private void RemoveExpiredEffects(float deltaTime)
         {
-            foreach (var list in _allUnitsEffects.Values)
+            foreach (var originalSet in _allUnitsEffects.Values)
             {
-                foreach (var effect in list)
+                var copiedSet = new HashSet<StatusEffect>(originalSet);
+                
+                foreach (var effect in copiedSet)
                 {
-                    if (!effect.IsActive)
-                        continue;
-
-                    if (Time.time - effect.ActivationTime > effect.Duration)
-                        effect.Deactivate();
+                    if (Time.time - effect.ActivationTime >= effect.Duration)
+                        originalSet.Remove(effect);
                 }
             }
         }
@@ -118,7 +114,7 @@ namespace Controller
         public void Dispose()
         {
             _levelController.SimulationStarted -= OnSimulationStarted;
-            _timeUtil.RemoveUpdateAction(DeactivateExpiredEffects);
+            _timeUtil.RemoveUpdateAction(RemoveExpiredEffects);
         }
     }
     

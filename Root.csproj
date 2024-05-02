@@ -74,6 +74,7 @@
      <Compile Include="Assets\Scripts\View\RootView.cs" />
      <Compile Include="Assets\Scripts\UnitBrains\Pathfinding\BaseUnitPath.cs" />
      <Compile Include="Assets\Scripts\UnitBrains\Player\SecondUnitBrain.cs" />
+     <Compile Include="Assets\Scripts\UnitBrains\Player\SupportDroneBrain.cs" />
      <Compile Include="Assets\Scripts\Model\PersistedModel.cs" />
      <Compile Include="Assets\Scripts\Model\Runtime\ReadOnly\IReadOnlyBase.cs" />
      <Compile Include="Assets\Scripts\UnitBrains\Pathfinding\SmartUnitPath.cs" />

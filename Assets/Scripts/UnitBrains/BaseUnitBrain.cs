@@ -110,7 +110,7 @@ namespace UnitBrains
                 if (otherUnit == unit)
                     continue;
 
-                if (enemies != (otherUnit.Config.IsPlayerUnit == unit.Config.IsPlayerUnit))
+                if (enemies == (otherUnit.Config.IsPlayerUnit == unit.Config.IsPlayerUnit))
                     continue;
 
                 var otherPos = otherUnit.Pos;
